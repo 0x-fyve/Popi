@@ -133,7 +133,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-ASGI_APPLICATION = "config.asgi.application"
+ASGI_APPLICATION = "Popi.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
