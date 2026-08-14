@@ -5,6 +5,7 @@ import string
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.utils import timezone
 
 # Create your views here.
 def generate_room_code():
@@ -29,6 +30,26 @@ class CreateRoomView(APIView):
 
         return Response({"code": room.code, "join_url": f"/join/{room.code}", "status": room.status})
 
+class JoinRoomView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request):
+        code = request.data.get("code")
 
-    
+        room = Room.objects.filter(code=code).first()
+
+        if not room:
+            return Response({"error": "Room not found."}, status=404)
+        if room.status == "closed":
+            return Response({"error": "Room is closed."}, status=400)
+
+        return Response(
+            {
+                "message": "Successfully joined the room.", 
+                "code": room.code,
+                "host": {
+                    "id": room.host.id,
+                    "username": room.host.username,
+                },
+                "status": room.status
+            }, status=200)

@@ -5,7 +5,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 class RoomStatus(models.TextChoices):
     ACTIVE = "active", "Active"
-    EXPIRED = "expired", "Expired"
+    WAITING = "waiting", "Waiting"
+    CLOSED = "closed", "Closed"
 
 class Room(models.Model):
     code = models.CharField(max_length=8, unique=True)
@@ -21,5 +22,6 @@ class Room(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
-    expired_at = models.DateTimeField(null=True, blank=True)
+
+    
     
