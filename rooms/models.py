@@ -20,8 +20,5 @@ class Room(models.Model):
         choices=RoomStatus.choices,
         default=RoomStatus.ACTIVE,
     )
-
+     
     created_at = models.DateTimeField(auto_now_add=True)
-
-    
-    
