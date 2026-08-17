@@ -15,12 +15,11 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
 
-        message = "hello bob"
         await self.channel_layer.group_send(
             self.group_name,
             {
                 'type': 'chat.message',
-                "message": message
+                "message": text_data
             }
         )
 
