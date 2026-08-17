@@ -39,6 +39,8 @@ REST_FRAMEWORK = {
 }
 
 INSTALLED_APPS = [
+    "channels",
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -50,7 +52,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",
-    "channels",
 ]
 CORS_ALLOW_ALL_ORIGINS = True
 
