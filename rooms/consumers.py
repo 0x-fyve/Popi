@@ -1,4 +1,5 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
+import json
 
 class RoomConsumer(AsyncWebsocketConsumer):
 
@@ -15,16 +16,19 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
 
+        data = json.loads(text_data)
+
         await self.channel_layer.group_send(
             self.group_name,
             {
                 'type': 'chat.message',
-                "message": text_data
+                "message": data
             }
         )
 
     async def chat_message(self, event):
-        await self.send(event["message"])
+        json_message = json.dumps(event["message"])
+        await self.send(json_message)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.group_name, self.channel_name)
