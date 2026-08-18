@@ -8,7 +8,6 @@ from rest_framework.views import APIView
 from .serializers import RegisterSerializer
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
-    TokenRefreshView,
 )
 
 
@@ -39,5 +38,22 @@ class RegisterView(APIView):
 class LoginView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
+
+        response.set_cookie(
+            key="access_token",
+            value=response.data["access"],
+            httponly=True,
+            samesite='Lax', 
+        )
+
+        response.set_cookie(
+            key="refresh_token",
+            value=response.data["refresh"],
+            httponly=True,
+            samesite='Lax', 
+        )
+
+        del response.data["access"]
+        del response.data["refresh"]
 
         return response
