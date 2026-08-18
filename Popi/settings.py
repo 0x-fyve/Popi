@@ -32,11 +32,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-}
+
 
 INSTALLED_APPS = [
     "channels",
@@ -53,7 +49,13 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
 ]
+
 CORS_ALLOW_ALL_ORIGINS = True
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "accounts.authentication.CookieJWTAuthentication",
+    ),
+}
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
