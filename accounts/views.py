@@ -58,6 +58,13 @@ class LoginView(TokenObtainPairView):
 
         return response
 
+class LogoutView(APIView):
+    def post(self, request):
+        response = Response({"detail": "Logout successful"}, status=status.HTTP_200_OK)
+        response.delete_cookie('access_token')
+        response.delete_cookie('refresh_token')
+        return response    
+
 
 
 class TestAuthView(APIView):
@@ -68,3 +75,13 @@ class TestAuthView(APIView):
             "username": request.user.username,
             "id": request.user.id,
         })    
+
+from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+
+@api_view(["GET"])
+@ensure_csrf_cookie
+def csrf_token(request):
+    return Response({"message": "CSRF cookie set"})    

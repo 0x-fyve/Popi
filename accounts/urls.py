@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (
 )
 from .views import RegisterView, LoginView, TestAuthView
 
-from .views import RegisterView, LoginView
+from .views import RegisterView, LoginView, csrf_token
 
 
 urlpatterns = [
@@ -28,4 +28,5 @@ urlpatterns = [
         name="refresh",
     ),
     path("test-auth/", TestAuthView.as_view()),
+    path("csrf/", csrf_token),
 ]
