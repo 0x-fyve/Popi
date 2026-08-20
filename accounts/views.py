@@ -86,17 +86,5 @@ from rest_framework.response import Response
 def csrf_token(request):
     return Response({"message": "CSRF cookie set"})    
 
-from http.cookies import SimpleCookie
-def get_access_token(scope):
-    cookie_header = get_cookie_header(scope)
 
-    if not cookie_header:
-        return None
-
-    cookie = SimpleCookie()
-    cookie.load(cookie_header)
-
-    access_token = cookie.get("access_token")
-
-    return access_token.value if access_token else None
 
