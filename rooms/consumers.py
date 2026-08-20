@@ -2,17 +2,22 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
 class RoomConsumer(AsyncWebsocketConsumer):
-
     async def connect(self):
-        
-        room_name = self.scope['url_route']['kwargs']['room_name']
+        room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        self.group_name = f"room_{room_name}"
 
-        self.group_name = f'room_{room_name}'
+        user = self.scope["user"]
 
-        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        if not user.is_authenticated:
+            await self.close()
+            return
+
+        await self.channel_layer.group_add(
+            self.group_name,
+            self.channel_name,
+        )
 
         await self.accept()
-
 
     async def receive(self, text_data):
 
@@ -31,4 +36,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.send(json_message)
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+        if hasattr(self, "group_name"):
+            await self.channel_layer.group_discard(
+                self.group_name,
+                self.channel_name,
+            )    
