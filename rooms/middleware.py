@@ -42,3 +42,13 @@ class CookieJWTMiddleware:
             except Exception:
                 scope["user"] = AnonymousUser()
                 return await self.app(scope, receive, send)
+
+
+from channels.db import database_sync_to_async
+
+from rooms.models import Room
+
+@database_sync_to_async
+def get_room(code):
+    room = Room.objects.filter(code=code).first()
+    return room            

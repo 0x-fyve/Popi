@@ -1,14 +1,21 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-
+from .middleware import get_room
+    
 class RoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        room_name = self.scope["url_route"]["kwargs"]["room_name"]
-        self.group_name = f"room_{room_name}"
+        room_code = self.scope["url_route"]["kwargs"]["room_name"]
+        self.group_name = f"room_{room_code}"
 
         user = self.scope["user"]
 
         if not user.is_authenticated:
+            await self.close()
+            return
+
+        room = await get_room(room_code)
+
+        if not room:
             await self.close()
             return
 
