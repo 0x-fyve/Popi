@@ -42,7 +42,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         json_message = json.dumps(event["message"])
         await self.send(json_message)
 
-    async def disconnect(self, close_code):
+    async def disconnect(self,):
         if hasattr(self, "group_name"):
             await self.channel_layer.group_discard(
                 self.group_name,
