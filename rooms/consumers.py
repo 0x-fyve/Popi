@@ -39,8 +39,8 @@ class RoomConsumer(AsyncWebsocketConsumer):
         )
 
     async def chat_message(self, event):
-        json_message = json.dumps(event["message"])
-        await self.send(json_message)
+        message = json.dumps(event["message"])
+        await self.send(message)
 
     async def disconnect(self, close_code):
         if hasattr(self, "group_name"):
