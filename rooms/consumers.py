@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from .middleware import get_room
+import uuid
     
 class RoomConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -18,13 +19,23 @@ class RoomConsumer(AsyncWebsocketConsumer):
         if not room:
             await self.close()
             return
+        
+        self.peer_id = str(uuid.uuid4())
 
         await self.channel_layer.group_add(
             self.group_name,
             self.channel_name,
+
         )
 
         await self.accept()
+
+        await self.send(
+            text_data=json.dumps({
+                "type": "connected",
+                "peer_id": self.peer_id,
+            })
+        )
 
     async def receive(self, text_data):
 
