@@ -7,11 +7,11 @@ class RoomConsumer(AsyncWebsocketConsumer):
         room_code = self.scope["url_route"]["kwargs"]["room_name"]
         self.group_name = f"room_{room_code}"
 
-        user = self.scope["user"]
+        # user = self.scope["user"]
 
-        if not user.is_authenticated:
-            await self.close()
-            return
+        #if not user.is_authenticated:
+         #   await self.close()
+           # return
 
         room = await get_room(room_code)
 

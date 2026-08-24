@@ -16,10 +16,10 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Popi.settings")
 
 from rooms.routing import websocket_urlpatterns
-from rooms.middleware import CookieJWTMiddleware
+#from rooms.middleware import CookieJWTMiddleware
 
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    "websocket": CookieJWTMiddleware(URLRouter(websocket_urlpatterns)),
+    "websocket": URLRouter(websocket_urlpatterns),
 })
